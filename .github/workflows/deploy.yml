@@ -67,16 +67,10 @@ jobs:
 
       - name: Configure kubeconfig for EKS
         shell: bash
-        env:
-          KUBECONFIG: "$HOME/.kube/config"
         run: |
           mkdir -p "$HOME/.kube"
           aws eks update-kubeconfig --name "${{ secrets.AWS_EKS_CLUSTER_NAME }}" --region "${{ secrets.AWS_REGION }}" --kubeconfig "$HOME/.kube/config" --alias "${{ secrets.AWS_EKS_CLUSTER_NAME }}"
-          NEW_CONTEXT=$(kubectl config get-contexts -o name | grep -F "${{ secrets.AWS_EKS_CLUSTER_NAME }}" | tail -n 1)
-          echo "Using context: $NEW_CONTEXT"
-          kubectl config use-context "$NEW_CONTEXT"
-          kubectl config current-context
-          kubectl config view --minify
+          kubectl --kubeconfig "$HOME/.kube/config" config view --minify
 
       - name: Update image names
         shell: bash
@@ -86,10 +80,8 @@ jobs:
 
       - name: Deploy to Kubernetes
         shell: bash
-        env:
-          KUBECONFIG: "$HOME/.kube/config"
         run: |
-          kubectl apply -k k8s/ --validate=false
-          kubectl rollout status deployment/backend -n cashew-store --timeout=180s
-          kubectl rollout status deployment/frontend -n cashew-store --timeout=180s
-          kubectl get pods -n cashew-store
+          kubectl --kubeconfig "$HOME/.kube/config" apply -k k8s/ --validate=false
+          kubectl --kubeconfig "$HOME/.kube/config" rollout status deployment/backend -n cashew-store --timeout=180s
+          kubectl --kubeconfig "$HOME/.kube/config" rollout status deployment/frontend -n cashew-store --timeout=180s
+          kubectl --kubeconfig "$HOME/.kube/config" get pods -n cashew-store
