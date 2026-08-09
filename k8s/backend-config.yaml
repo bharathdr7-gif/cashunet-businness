@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: cashew-store
+data:
+  MONGODB_URL: mongodb://mongodb:27017
+  MONGODB_DB: cashew_store
+  CORS_ORIGINS: "*"
