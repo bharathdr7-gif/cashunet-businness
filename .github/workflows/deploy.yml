@@ -92,8 +92,8 @@ jobs:
         run: |
           which aws
           aws --version
-          kubectl --kubeconfig "$HOME/.kube/config" config current-context
-          kubectl --kubeconfig "$HOME/.kube/config" apply -k k8s/ --validate=false
-          kubectl --kubeconfig "$HOME/.kube/config" rollout status deployment/backend -n cashew-store --timeout=180s
-          kubectl --kubeconfig "$HOME/.kube/config" rollout status deployment/frontend -n cashew-store --timeout=180s
-          kubectl --kubeconfig "$HOME/.kube/config" get pods -n cashew-store
+          TOKEN=$(aws eks get-token --cluster-name "${{ secrets.AWS_EKS_CLUSTER_NAME }}" --region "${{ secrets.AWS_REGION }}" --output json | python3 -c 'import sys, json; print(json.load(sys.stdin)["status"]["token"])')
+          kubectl --kubeconfig "$HOME/.kube/config" --token "$TOKEN" apply -k k8s/ --validate=false
+          kubectl --kubeconfig "$HOME/.kube/config" --token "$TOKEN" rollout status deployment/backend -n cashew-store --timeout=180s
+          kubectl --kubeconfig "$HOME/.kube/config" --token "$TOKEN" rollout status deployment/frontend -n cashew-store --timeout=180s
+          kubectl --kubeconfig "$HOME/.kube/config" --token "$TOKEN" get pods -n cashew-store
