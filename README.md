@@ -107,12 +107,15 @@ The workflow builds both Docker images, pushes them to GHCR, and deploys the Kub
 Required GitHub repository secrets:
 
 ```text
-KUBE_CONFIG
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_REGION
+AWS_EKS_CLUSTER_NAME
 ```
 
-`KUBE_CONFIG` should contain the kubeconfig file content for the Kubernetes cluster.
+The workflow uses AWS credentials to authenticate and run `aws eks update-kubeconfig` for the target EKS cluster.
 
-The workflow uses GitHub's built-in `GITHUB_TOKEN` to push to GHCR.
+The workflow also uses GitHub's built-in `GITHUB_TOKEN` to push to GHCR.
 
 For a private GHCR package, create a Kubernetes image pull secret and reference it in the deployments.
 
