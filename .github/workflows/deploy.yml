@@ -1,6 +1,10 @@
 name: Build and Deploy Cashew Store
 
 on:
+  push:
+    branches:
+      - main
+      - master
   workflow_dispatch:
 
 permissions:
@@ -8,7 +12,7 @@ permissions:
   packages: write
 
 env:
-  REGISTRY: ghcr.io
+  REGISTRY: docker.io
   BACKEND_IMAGE: ${{ github.repository_owner }}/cashew-backend
   FRONTEND_IMAGE: ${{ github.repository_owner }}/cashew-frontend
 
@@ -82,8 +86,8 @@ jobs:
       - name: Update image names
         shell: bash
         run: |
-          sed -i "s|ghcr.io/YOUR_GITHUB_USER/cashew-backend:latest|ghcr.io/${{ env.BACKEND_IMAGE }}:${{ github.sha }}|g" k8s/backend-deployment.yaml
-          sed -i "s|ghcr.io/YOUR_GITHUB_USER/cashew-frontend:latest|ghcr.io/${{ env.FRONTEND_IMAGE }}:${{ github.sha }}|g" k8s/frontend-deployment.yaml
+          sed -i "s|docker.io/YOUR_GITHUB_USER/cashew-backend:latest|docker.io/${{ env.BACKEND_IMAGE }}:${{ github.sha }}|g" k8s/backend-deployment.yaml
+          sed -i "s|docker.io/YOUR_GITHUB_USER/cashew-frontend:latest|docker.io/${{ env.FRONTEND_IMAGE }}:${{ github.sha }}|g" k8s/frontend-deployment.yaml
 
       - name: Deploy to Kubernetes
         shell: bash

@@ -10,7 +10,7 @@ A complete starter e-commerce application for a cashew-selling business.
 - Containers: Docker
 - Orchestration: Kubernetes
 - CI/CD: GitHub Actions
-- Container registry: GitHub Container Registry (GHCR)
+- Container registry: GitHub Container Registry (docker)
 
 ## Features
 
@@ -77,11 +77,11 @@ The manifests deploy:
 Build and push images manually:
 
 ```bash
-docker build -t ghcr.io/YOUR_GITHUB_USER/cashew-backend:latest ./backend
-docker build -t ghcr.io/YOUR_GITHUB_USER/cashew-frontend:latest ./frontend
+docker build -t docker.io/YOUR_GITHUB_USER/cashew-backend:latest ./backend
+docker build -t docker.io/YOUR_GITHUB_USER/cashew-frontend:latest ./frontend
 
-docker push ghcr.io/YOUR_GITHUB_USER/cashew-backend:latest
-docker push ghcr.io/YOUR_GITHUB_USER/cashew-frontend:latest
+docker push docker.io/YOUR_GITHUB_USER/cashew-backend:latest
+docker push docker.io/YOUR_GITHUB_USER/cashew-frontend:latest
 ```
 
 Update the image names in:
@@ -102,7 +102,7 @@ kubectl get ingress
 
 ## GitHub Actions
 
-The workflow builds both Docker images, pushes them to GHCR, and deploys the Kubernetes manifests.
+The workflow builds both Docker images, pushes them to docker, and deploys the Kubernetes manifests.
 
 Required GitHub repository secrets:
 
@@ -115,9 +115,9 @@ AWS_EKS_CLUSTER_NAME
 
 The workflow uses AWS credentials to authenticate and run `aws eks update-kubeconfig` for the target EKS cluster.
 
-The workflow also uses GitHub's built-in `GITHUB_TOKEN` to push to GHCR.
+The workflow also uses GitHub's built-in `GITHUB_TOKEN` to push to docker.
 
-For a private GHCR package, create a Kubernetes image pull secret and reference it in the deployments.
+For a private docker package, create a Kubernetes image pull secret and reference it in the deployments.
 
 ## Production notes
 

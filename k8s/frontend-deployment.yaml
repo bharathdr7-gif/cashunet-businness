@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/YOUR_GITHUB_USER/cashew-frontend:latest
+          image: docker.io/YOUR_GITHUB_USER/cashew-frontend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80
