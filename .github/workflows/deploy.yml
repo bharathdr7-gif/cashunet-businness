@@ -86,8 +86,8 @@ jobs:
       - name: Update image names
         shell: bash
         run: |
-          sed -i "s|docker.io/YOUR_GITHUB_USER/cashew-backend:latest|docker.io/${{ env.BACKEND_IMAGE }}:${{ github.sha }}|g" k8s/backend-deployment.yaml
-          sed -i "s|docker.io/YOUR_GITHUB_USER/cashew-frontend:latest|docker.io/${{ env.FRONTEND_IMAGE }}:${{ github.sha }}|g" k8s/frontend-deployment.yaml
+          sed -i "s|docker.io/bharathdr7/cashew-backend:latest|docker.io/${{ env.BACKEND_IMAGE }}:${{ github.sha }}|g" k8s/backend-deployment.yaml
+          sed -i "s|docker.io/bharathdr7/cashew-frontend:latest|docker.io/${{ env.FRONTEND_IMAGE }}:${{ github.sha }}|g" k8s/frontend-deployment.yaml
 
       - name: Deploy to Kubernetes
         shell: bash

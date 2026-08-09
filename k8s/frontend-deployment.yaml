@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: docker.io/YOUR_GITHUB_USER/cashew-frontend:latest
+          image: docker.io/bharathdr7/cashew-frontend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -26,8 +26,10 @@ metadata:
   name: frontend
   namespace: cashew-store
 spec:
+  type: NodePort
   selector:
     app: frontend
   ports:
     - port: 80
       targetPort: 80
+      nodePort: 30080

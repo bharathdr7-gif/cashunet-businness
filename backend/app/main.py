@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from bson import ObjectId
 
 from .config import CORS_ORIGINS
-from .database import client, users_collection, products_collection, orders_collection
+from .database import client, users_collection, products_collection, orders_collection, wait_for_mongodb
 from .models import OTPRequest, OTPVerify, ProductCreate, OrderCreate, OrderStatusUpdate
 
 
@@ -38,6 +38,7 @@ def serialize_order(doc: dict[str, Any]) -> dict[str, Any]:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    await wait_for_mongodb()
     if await products_collection.count_documents({}) == 0:
         seed = [
             {

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: docker.io/YOUR_GITHUB_USER/cashew-backend:latest
+          image: docker.io/bharathdr7/cashew-backend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
