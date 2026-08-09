@@ -54,8 +54,7 @@ jobs:
       - name: Install AWS CLI
         shell: bash
         run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli
+          python3 -m pip install --upgrade pip awscli
           aws --version
 
       - name: Configure kubeconfig for EKS
