@@ -50,6 +50,7 @@ jobs:
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o awscliv2.zip
           unzip awscliv2.zip
           sudo ./aws/install --update
+          which aws
           aws --version
 
       - name: Configure AWS credentials
@@ -67,10 +68,16 @@ jobs:
 
       - name: Configure kubeconfig for EKS
         shell: bash
+        env:
+          PATH: /usr/local/bin:/usr/bin:/bin:$PATH
         run: |
           mkdir -p "$HOME/.kube"
+          aws --version
+          which aws
+          aws eks get-token --cluster-name "${{ secrets.AWS_EKS_CLUSTER_NAME }}" --region "${{ secrets.AWS_REGION }}"
           aws eks update-kubeconfig --name "${{ secrets.AWS_EKS_CLUSTER_NAME }}" --region "${{ secrets.AWS_REGION }}" --kubeconfig "$HOME/.kube/config" --alias "${{ secrets.AWS_EKS_CLUSTER_NAME }}"
           kubectl --kubeconfig "$HOME/.kube/config" config view --minify
+          kubectl --kubeconfig "$HOME/.kube/config" config get-contexts
 
       - name: Update image names
         shell: bash
@@ -80,7 +87,12 @@ jobs:
 
       - name: Deploy to Kubernetes
         shell: bash
+        env:
+          PATH: /usr/local/bin:/usr/bin:/bin:$PATH
         run: |
+          which aws
+          aws --version
+          kubectl --kubeconfig "$HOME/.kube/config" config current-context
           kubectl --kubeconfig "$HOME/.kube/config" apply -k k8s/ --validate=false
           kubectl --kubeconfig "$HOME/.kube/config" rollout status deployment/backend -n cashew-store --timeout=180s
           kubectl --kubeconfig "$HOME/.kube/config" rollout status deployment/frontend -n cashew-store --timeout=180s
