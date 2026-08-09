@@ -72,7 +72,9 @@ jobs:
         run: |
           mkdir -p "$HOME/.kube"
           aws eks update-kubeconfig --name "${{ secrets.AWS_EKS_CLUSTER_NAME }}" --region "${{ secrets.AWS_REGION }}" --kubeconfig "$HOME/.kube/config" --alias "${{ secrets.AWS_EKS_CLUSTER_NAME }}"
-          kubectl config use-context "${{ secrets.AWS_EKS_CLUSTER_NAME }}"
+          NEW_CONTEXT=$(kubectl config get-contexts -o name | grep -F "${{ secrets.AWS_EKS_CLUSTER_NAME }}" | tail -n 1)
+          echo "Using context: $NEW_CONTEXT"
+          kubectl config use-context "$NEW_CONTEXT"
           kubectl config current-context
           kubectl config view --minify
 
