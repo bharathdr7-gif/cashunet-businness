@@ -35,8 +35,10 @@ jobs:
         run: |
           cd maven-app
           mvn -B clean verify
+          ls -la target
 
       - name: Publish Maven artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: maven-app-jar
