@@ -100,6 +100,19 @@ kubectl get svc
 kubectl get ingress
 ```
 
+## Maven Build
+
+A sample Maven module has been added under `maven-app`. Build and test it locally with:
+
+```bash
+cd maven-app
+mvn clean verify
+```
+
+The resulting JAR is produced in `maven-app/target/maven-app-1.0.0.jar`.
+
+The Maven build and unit tests are now run as part of the main deploy workflow in `.github/workflows/deploy.yml`, and the generated JAR is uploaded as a workflow artifact.
+
 ## GitHub Actions
 
 The workflow builds both Docker images, pushes them to docker, and deploys the Kubernetes manifests.
